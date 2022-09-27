@@ -7,11 +7,11 @@
         </button>
         <v-card
           class="mx-3 my-12 text-center"
-          max-width="370"
+          max-width="450"
         >
             <h1>{{item.safe_title}}</h1>
-            <v-img :src="item.img"></v-img>
-            <p class="grey--text ms-4">
+            <v-img :src="item.img" contain></v-img>
+            <p class="grey--text mt-2">
               #{{item.num}}
             </p>
             <p>Img: <a :href="item.img">{{item.img}}</a></p>
@@ -44,11 +44,13 @@
             this.link++
             this.axios.get('http://localhost:8080/'+this.link+'/info.0.json')
             .then(response => this.item= response.data)
+            this.$forceUpdate();
         },
         prev(){
             this.link--
             this.axios.get('http://localhost:8080/'+this.link+'/info.0.json')
             .then(response => this.item= response.data)
+            this.$forceUpdate();
         },
     },
     mounted: function(){
