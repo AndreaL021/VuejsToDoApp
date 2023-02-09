@@ -12,9 +12,6 @@ const state= {
     getUserCounter: state=> state.userCounter,
     getUsers: state=> state.users.slice().reverse(),
     getUser: state=> id=> state.users.find(user=>user.id===id),
-    getUserSearchTasks:state=>name=>state.users.filter(
-      user=>user.name.toUpperCase().includes(name.toUpperCase())
-    ),
     getSelect: state=>state.selectedUser
   };
   const mutations= {
@@ -34,4 +31,4 @@ const state= {
       getters,
       mutations,
       actions
-  }
+    }

@@ -1,20 +1,25 @@
 <template>
   <v-form>
     <v-container>
-      <h1 class="text-center">Register</h1>
+      <h1 class="text-center">Registra utente</h1>
       <v-row class="d-flex justify-center">
         <v-col cols="4">
           <v-text-field 
-            label="Name"
+            label="Nome"
             v-model="name"
           ></v-text-field>
           <div class="red--text">{{message}}</div>
         </v-col>
-        <v-btn @click="add" class="align-self-center light-green accent-3">
-          submit
-        </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn @click="add" class="align-self-center" icon dark v-bind="attrs" v-on="on">
+            <v-icon color="success" large> mdi-content-save </v-icon>
+          </v-btn>
+        </template>
+        <span>Salva</span>
+      </v-tooltip>
       </v-row>
-      <div>Users:</div>
+      <b>Utenti:</b>
       <v-row>
         <v-col cols="2" v-for="user in users" :key="user.id"><div>{{user.name}}</div></v-col>
       </v-row>

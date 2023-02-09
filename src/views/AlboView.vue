@@ -1,6 +1,5 @@
 <template>
     <v-container>
-      <h1 class="text-center">Task</h1>
       <v-row class="d-flex justify-center">
         <button @click="prev" class="align-self-center light-green--text accent-3">
           <font-awesome-icon icon="fa-solid fa-circle-left" size="3x" />

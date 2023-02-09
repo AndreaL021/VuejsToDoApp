@@ -11,8 +11,8 @@
         <v-list-item-content>
           <v-list-item-title class="text-h5 mb-1">
             #{{task.id}} - {{task.name}} - {{user.name}}
-            <span v-if="task.done===true">Completed</span>
-            <span v-else-if="task.done===false">Not completed</span>
+            <span v-if="task.done===true">Completata</span>
+            <span v-else-if="task.done===false">Non completata</span>
             <span v-else>To do</span>
           </v-list-item-title>
         </v-list-item-content>
@@ -25,6 +25,7 @@
           >
             <font-awesome-icon icon="fa-regular fa-square-check fa-2x" size="2x" />
           </v-btn>
+          <v-icon color="primary"> fa-solid fa-vault </v-icon>
 
           <v-btn v-if="task.done===null"
           class="error mx-2"
@@ -77,7 +78,9 @@ export default{
   },
 methods:{
   remove(id){
-    this.$store.dispatch('removeTask', id)
+    this.$store.dispatch('removeTask', id).then(() => {
+          console.log('OK');
+      });
   },
   done(id){
     this.$store.dispatch('doneCheck', id);

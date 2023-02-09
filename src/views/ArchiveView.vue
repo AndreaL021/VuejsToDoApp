@@ -1,69 +1,111 @@
 <template>
-    <v-form>
-      <v-container>
-        <h1 class="text-center">Completed task</h1>
-        <v-row class="text-center my-3">
-            <v-col cols="12">
-                <Select @getUserTasks="getTasks($event)"/>
-            </v-col>
-        </v-row>
-        <Search @getUserTasks="getTasks($event)"/>
-        <Card @getUserTasks="getTasks($event)" 
-        v-for="task in userTasks" :key="task.id" :task="task"/>
-      </v-container>
-    </v-form>
+  <v-form>
+    <v-container>
+      <h1 class="text-center">Task completate</h1>
+      <v-row justify="center" class="my-3">
+        <v-col cols="4">
+          <v-autocomplete
+            @change="search"
+            v-model="selected"
+            :items="users"
+            item-text="name"
+            item-value="id"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row class="d-flex justify-center">
+        <v-col cols="4">
+          <v-text-field label="Search" v-model="name"></v-text-field>
+        </v-col>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="search"
+              class="align-self-center"
+              icon
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon color="success" large> mdi-magnify </v-icon>
+            </v-btn>
+          </template>
+          <span>Cerca</span>
+        </v-tooltip>
+      </v-row>
+      <Card
+        @getUserTasks="getTasks($event)"
+        v-for="task in tasks"
+        :key="task.id"
+        :task="task"
+      />
+    </v-container>
+  </v-form>
 </template>
 
 <script>
-import Card from '../components/Archive/ArchiveCard.vue'
-import Select from '../components/Archive/ArchiveSelect.vue'
-import Search from '../components/Archive/ArchiveSearch.vue'
+import Card from "../components/ArchiveCard.vue";
 
 export default {
-    name: 'ArchiveView',
-    data(){
-        return {
-            userTasks:[],
-            id:null
-        }
+  name: "ArchiveView",
+  data() {
+    return {
+      selected: null,
+      name: "",
+      tasks: [],
+      totTasks: [],
+      userTasks: [],
+    };
+  },
+  components: {
+    Card,
+  },
+  methods: {
+    getTasks() {
+      this.totTasks = this.$store.getters.getArchive;
+      this.tasks = this.totTasks;
     },
-    components: {
-        Card,
-        Select,
-        Search
-    },
-    methods:{
-        getTasks(tasks){
-            this.userTasks=[];
-            for (let i = 0; i < tasks.length; i++) {
-                this.userTasks.push(tasks[i])
-            }
-
-        },
-        search(){
-            this.userTasks=[];
-            for (let i = 0; i < this.tasks.length; i++) {
-                if (this.tasks[i].name.includes(this.name)) {
-                    this.userTasks.push(this.tasks[i])
-                }
-            }
-            for (let i = 0; i < this.users.length; i++) {
-                if (this.users[i].name==this.name) {
-                    this.getTasks
-                }
-            }
+    search() {
+      this.tasks = [];
+      this.userTasks = [];
+      if (this.selected != null) {
+        this.totTasks.forEach((t) => {
+          if (t.user_id === this.selected) {
+            this.userTasks.push(t);
+          }
+        });
+      }
+      if (this.userTasks.length > 0) {
+        if (this.name != "") {
+          for (let i = 0; i < this.userTasks.length; i++) {
+            if (this.userTasks[i].name.includes(this.name))
+              this.tasks.push(this.userTasks[i]);
+          }
+          console.log(this.tasks);
+        } else {
+          this.tasks = Array.from(this.userTasks);
         }
-    },
-    computed:{
-        tasks(){
-            return this.$store.getters.getTasks
-        },
-        users(){
-          return this.$store.getters.getUsers
+      } else {
+        for (let i = 0; i < this.totTasks.length; i++) {
+          if (this.totTasks[i].name.includes(this.name))
+            this.tasks.push(this.totTasks[i]);
         }
-
-    }   
-}
+      }
+    },
+  },
+  mounted() {
+    this.getTasks();
+  },
+  computed: {
+    users() {
+      return this.$store.getters.getUsers;
+    },
+    select() {
+      return this.$store.getters.getArchiveSelect();
+    },
+  },
+};
 </script>
 
     
